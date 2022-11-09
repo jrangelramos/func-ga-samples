@@ -59,3 +59,24 @@ oc create secret generic mirror-registry-creds \
    --type=kubernetes.io/dockerconfigjson
 ```
 
+## Configuring Maven Mirror for Disconnected environments
+
+Java S2I builders supports maven settings to be customized via 
+environment variables. You can setup you mirroed Maven Repository
+(example Nexus or Artifactory) by addin the environment variable `MAVEN_MIRROR_URL` to `func.yaml` with the location of your internal maven repository, as below:
+
+```
+buildEnvs:
+- name: MAVEN_MIRROR_URL
+  value: http://artifactory-oss.apps.mycluster.net/artifactory/restricted
+```
+
+This is useful when your mirror repository allows anonymous access without authentication.
+
+In case you need to access a private maven repository that requires
+authentication you will need to set different build environment
+variables such as `MAVEN_REPO_USERNAME` and `MAVEN_REPO_PASSWORD`.
+
+Please refer to https://docs.openshift.com/online/pro/using_images/s2i_images/java.html for more information about it.
+
+
