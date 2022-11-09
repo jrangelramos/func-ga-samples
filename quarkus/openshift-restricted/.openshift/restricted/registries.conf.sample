@@ -1,0 +1,7 @@
+[[registry]]
+  prefix = ""
+  location = "registry.redhat.io/ubi8"
+  mirror-by-digest-only = true
+
+  [[registry.mirror]]
+    location = "registry-mirror.apps.mycluster.net/ubi8"
