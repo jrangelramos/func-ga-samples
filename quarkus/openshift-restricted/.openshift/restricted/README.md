@@ -7,10 +7,8 @@ network.
 In order to get function built on cluster by s2i builder, you need
 to indicate to the task the location of you mirror as well as the
 credentials and certificated required to authenticate and access the
-registry. 
+registry using a secret `mirror-config`
 
-Ideally you base your mapping on the image content source policy
-installed on Openshift
 
 
 ## Create `registries.conf`
@@ -35,28 +33,34 @@ cat registries.conf
     location = "registry-mirror.apps.mycluster.net/ubi8"
 ```
 
-## Create secret `mirror-registry-creds`
+## Create `auth.json`
 
-Create a secret of type with name `mirror-registry-creds` or type 
-`kubernetes.io/dockerconfigjson` with the credentials used to access
-the mirror registry.
+Create a `auth.json` (or `config.json`) file with the credentials used
+to access the mirror registry.
 
 Example
 
 ```
-cat << EOF > config.json
+cat auth.json
 {
     "auths": {
         "registry-mirror.mycluster.net": {
-            "auth": "cmVnaXN0cnk6c3VwZXJzZWNyZXRwYXNzd29yZAo="
+            "auth": "dXNlcjpwYXNzd29yZAo="
         }
     }
 }
-EOF
+```
 
-oc create secret generic mirror-registry-creds \
-   --from-file=.dockerconfigjson=$(pwd)/config.json \
-   --type=kubernetes.io/dockerconfigjson
+## Create secret `mirror-config`
+
+Create a secret of type with name `mirror-config` with the files 
+`registries.conf`, `auth.json` and `policy.json` as below 
+
+```
+oc create secret generic mirror-config \
+  --from-file=$(pwd)/registries.conf \
+  --from-file=$(pwd)/auth.json \
+  --from-file=$(pwd)/policy.json 
 ```
 
 ## Configuring Maven Mirror for Disconnected environments

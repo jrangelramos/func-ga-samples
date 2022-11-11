@@ -1,0 +1,7 @@
+{
+	"auths": {
+		"registry-mirror.mycluster.net": {
+			"auth": "dXNlcjpwYXNzd29yZAo="
+		}
+	}
+}

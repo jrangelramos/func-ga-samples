@@ -4,4 +4,4 @@
   mirror-by-digest-only = true
 
   [[registry.mirror]]
-    location = "registry-mirror.apps.mycluster.net/ubi8"
+    location = "registry-mirror.mycluster.net/ubi8"
